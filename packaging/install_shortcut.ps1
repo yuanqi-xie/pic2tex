@@ -1,4 +1,4 @@
-# Create a desktop shortcut that launches Pic2TeX with pythonw (no console).
+﻿# Create a desktop shortcut that launches Pic2TeX with pythonw (no console).
 #
 # Usage: powershell -ExecutionPolicy Bypass -File .\packaging\install_shortcut.ps1
 

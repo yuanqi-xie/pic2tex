@@ -1,4 +1,4 @@
-# Build a standalone Pic2TeX.exe with PyInstaller (one file, windowed).
+﻿# Build a standalone Pic2TeX.exe with PyInstaller (one file, windowed).
 #
 # Usage (from the repository root or anywhere):
 #   powershell -ExecutionPolicy Bypass -File .\packaging\build_exe.ps1

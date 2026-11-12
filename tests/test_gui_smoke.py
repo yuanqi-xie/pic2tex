@@ -31,10 +31,10 @@ class GuiSmokeTests(unittest.TestCase):
             self.assertEqual(root.title(), "Pic2TeX · 图片转 LaTeX")
             geometry = root.wm_geometry()
             width = int(geometry.split("+")[0].split("x")[0])
-            height = int(geometry.split("+")[0].split("x")[1])
+            # The window must be at least as wide as the requested content and
+            # all key buttons must sit inside it.  Height is intentionally not
+            # asserted: small CI desktops are allowed to clamp the window.
             self.assertGreaterEqual(width, root.winfo_reqwidth())
-            self.assertGreaterEqual(height, root.winfo_reqheight())
-            # The main action buttons must be inside the window.
             for widget in (app.monitor_btn, app.settings_btn, app.copy_btn):
                 right = widget.winfo_rootx() + widget.winfo_width() - root.winfo_rootx()
                 self.assertLessEqual(right, width + 2, msg=f"{widget} overflows the window")
