@@ -1,0 +1,4 @@
+# Optional dependencies for a nicer preview experience.
+# Pic2TeX works fine without them; Pillow adds JPEG/WebP previews and
+# high-quality scaling of the image preview.
+Pillow>=10.0

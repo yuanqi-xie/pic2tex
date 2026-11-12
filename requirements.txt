@@ -1,0 +1,5 @@
+# Pic2TeX has NO required third-party dependencies.
+# It runs on the Python standard library only (Python 3.10+).
+#
+# Optional extras:
+#   pip install -r requirements-optional.txt   # Pillow: JPEG/WebP previews + smoother scaling

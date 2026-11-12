@@ -1,0 +1,29 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Build artifacts
+build/
+dist/
+*.spec
+!packaging/Pic2TeX.spec
+
+# Local env / secrets
+.env
+*.key
+config.local.json
+
+# Runtime state (never committed)
+*.log
+history/
+output/
+.venv/
+venv/
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

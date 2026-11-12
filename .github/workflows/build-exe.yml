@@ -1,0 +1,32 @@
+name: Build Windows exe
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PyInstaller
+        run: python -m pip install --upgrade pyinstaller
+
+      - name: Build exe
+        shell: pwsh
+        run: ./packaging/build_exe.ps1 -NoInstall
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Pic2TeX-windows
+          path: dist/Pic2TeX.exe
