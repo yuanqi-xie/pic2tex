@@ -36,6 +36,8 @@
 
 ## 快速开始
 
+> 不想安装 Python？直接到 [**Releases**](https://github.com/21aQ/pic2tex/releases) 下载 `Pic2TeX.exe`，双击即可运行（Windows x64，单文件绿色版）。
+
 ```powershell
 # 1. 获取代码
 git clone https://github.com/21aQ/pic2tex.git
@@ -161,7 +163,7 @@ powershell -ExecutionPolicy Bypass -File .\packaging\build_exe.ps1
 # 产物：dist\Pic2TeX.exe（单文件、无控制台窗口，可直接分发）
 ```
 
-打包脚本会把 `assets\`（图标、演示图片）一起打进 exe。也可以使用 GitHub Actions 的 **Build Windows exe** 工作流，在 Actions 页面下载构建产物。
+打包脚本会把 `assets\`（图标、演示图片）一起打进 exe。也可以直接使用 [Releases](https://github.com/21aQ/pic2tex/releases) 中预构建的 `Pic2TeX.exe`，或使用 GitHub Actions 的 **Build Windows exe** 工作流，在 Actions 页面下载构建产物。
 
 创建桌面快捷方式（源码运行方式）：
 
