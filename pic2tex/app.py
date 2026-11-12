@@ -99,11 +99,6 @@ def make_client(config: Config, *, timeout: float | None = None) -> DeepSeekVisi
     )
 
 
-def _print_result(latex: str) -> None:
-    print(latex)
-    print()
-
-
 def cmd_check(config: Config) -> int:
     print(f"Pic2TeX {__version__}")
     print(f"API 地址 : {config.effective_base_url}")
@@ -241,6 +236,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.watch:
         return cmd_watch(config)
+
+    if args.output and not args.images:
+        print("错误：-o/--output 需要至少一个图片文件。", file=sys.stderr)
+        return 2
 
     use_gui = args.gui or (not args.images and not args.output)
     if use_gui:

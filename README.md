@@ -186,7 +186,7 @@ pic2tex/
 │  ├─ prompts.py             # 公式/整页文档提示词
 │  ├─ winutil.py             # DPI、原生剪贴板、截图工具、资源路径
 │  └─ models.py              # ImagePayload 数据模型
-├─ tests/                    # 128 个标准库 unittest 测试（无需网络/Key）
+├─ tests/                    # 离线单元测试（无需网络/API Key）
 ├─ tools/make_icon.py        # 生成多尺寸 .ico（纯标准库）
 ├─ packaging/                # 打包与快捷方式脚本
 ├─ assets/                   # 图标、界面截图、演示公式图

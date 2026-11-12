@@ -722,8 +722,9 @@ def load_image_bytes(
     """Normalise arbitrary image bytes into an :class:`ImagePayload`.
 
     PNG/JPEG/GIF/WebP data is passed through unchanged; BMP is converted to
-    PNG.  Unsupported formats, empty input, data over 32 MiB and malformed BMP
-    payloads raise :class:`ImageError`.
+    PNG.  Unsupported formats, empty input, data over 32 MiB, images whose
+    headers are corrupt or unreadable, and images larger than the API limit
+    (8192 px per side) raise :class:`ImageError`.
     """
     raw = _as_bytes(data)
     if not raw:
@@ -749,7 +750,14 @@ def load_image_bytes(
         raise ImageError(
             "unsupported image format (expected PNG, JPEG, GIF, WebP or BMP)"
         )
-    width, height = image_size(raw) or (0, 0)
+    parsed = image_size(raw)
+    if parsed is None or parsed[0] <= 0 or parsed[1] <= 0:
+        raise ImageError("corrupt image data (cannot read image dimensions)")
+    width, height = parsed
+    if width > 8192 or height > 8192:
+        raise ImageError(
+            f"image is too large ({width}x{height}); the API limit is 8192 px per side"
+        )
     return ImagePayload(
         data=raw,
         mime=mime,

@@ -37,15 +37,15 @@ from .winutil import (
 log = logging.getLogger(__name__)
 
 APP_TITLE = "Pic2TeX · 图片转 LaTeX"
-WELCOME_TEXT = """%% 欢迎使用 Pic2TeX —— 截图 / 图片 → LaTeX
+WELCOME_TEXT = """欢迎使用 Pic2TeX —— 截图 / 图片 → LaTeX
 
-%% 第一次使用：
-%%   1. 点击右上角「⚙ 设置」，填入 DeepSeek API Key
-%%      （也可以设置环境变量 DEEPSEEK_API_KEY）
-%%   2. 点击「▶ 开始监听」
-%%   3. 按 Win+Shift+S 截图，结果会自动出现在这里并复制到剪贴板
-%%
-%% 也可以点击「上传图片」，或按 Ctrl+V 直接粘贴图片。
+第一次使用：
+  1. 点击右上角「⚙ 设置」，填入 DeepSeek API Key
+     （也可以设置环境变量 DEEPSEEK_API_KEY）
+  2. 点击「▶ 开始监听」
+  3. 按 Win+Shift+S 截图，结果会自动出现在这里并复制到剪贴板
+
+也可以点击「上传图片」，或按 Ctrl+V 直接粘贴图片。
 """
 
 SPINNER = "⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
@@ -912,6 +912,17 @@ class Pic2TeXApp:
             if event[1] != self._conversion_token:
                 return
             self._fail_conversion(event[2], event[3])
+        elif kind == "check_result":
+            _kind, ok, message, label, button = event
+            try:
+                if label.winfo_exists():
+                    label.configure(
+                        text=message, fg=COLORS["green"] if ok else COLORS["red"]
+                    )
+                if button.winfo_exists():
+                    button.configure(state="normal")
+            except tk.TclError:  # settings window already closed
+                pass
 
     # -------------------------------------------------------------- conversion
     def _start_conversion(self, payload: ImagePayload) -> None:
@@ -1505,17 +1516,8 @@ class Pic2TeXApp:
                 ok, message = client.check_connection()
             except Exception as exc:  # pragma: no cover - defensive
                 ok, message = False, f"初始化失败：{exc}"
-
-            def show() -> None:
-                if not result_label.winfo_exists():
-                    return
-                result_label.configure(text=message, fg=COLORS["green"] if ok else COLORS["red"])
-                button.configure(state="normal")
-
-            try:
-                self.root.after(0, show)
-            except Exception:
-                pass
+            # Never touch Tk from this thread: hand the result to the UI queue.
+            self.queue.put(("check_result", ok, message, result_label, button))
 
         threading.Thread(target=run, daemon=True, name="pic2tex-check").start()
 
